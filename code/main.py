@@ -57,10 +57,12 @@ def ping_url(url):
         for response in response_list:
             if (not response.success):
                 i += 1
+
         if (i == 4):
             return False
         else:
             return True
+            
     except Exception as e:
         send_message(str(e))
 
