@@ -5,7 +5,6 @@ import yaml
 from libs.host import address  
 
 def init():
-
     global bot, userid
 
     with open('/usr/src/app/config.yaml') as f:
