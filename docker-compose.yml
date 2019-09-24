@@ -1,0 +1,19 @@
+version: '3'
+
+networks:
+  default:
+    external:
+      name: network
+
+services:
+
+  checkservicebot:
+    container_name: checkservicesbot
+    build: .
+    restart: always
+    volumes:
+      - ./code:/usr/src/app
+      - ./config.yaml:/usr/src/app/config.yaml
+    labels:
+      - traefik.enable=false
+    command: python /usr/src/app/main.py
