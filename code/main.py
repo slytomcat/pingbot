@@ -13,7 +13,7 @@ def init():
 
             for doc in docs:
                 for k, v in doc.items():
-                    if k == "botid":
+                    if k == "botkey":
                         bot = Bot(v)
                     elif k == "userid":
                         userid = v
@@ -37,34 +37,20 @@ def send_message(message):
 
 def ping_host(address):
    
-    if ping_url(address.address):
-        if not address.status:
-            address.status = True
-            send_message(address.comment + " is up again")
-    else:
-        if (address.status):
-            address.status = False
-            send_message(address.comment + " is down")
+    status = ping_url(address.address)
+    if status != address.status:
+        send_message(address.comment + ( " is unresolwed" if status is none elseif status " is up" else " is down"))
+        address.status = staus
             
 
 def ping_url(url):
 
-    i = 0;
-
     try:
         response_list = ping(url)
+    except:
+        return None
 
-        for response in response_list:
-            if (not response.success):
-                i += 1
-
-        if (i == 4):
-            return False
-        else:
-            return True
-            
-    except Exception as e:
-        send_message(str(e))
+    return 4 == sum(1 for x in response_list if x == response.success)
 
 def main():
 
