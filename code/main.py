@@ -2,23 +2,28 @@ from telegram import Bot
 from pythonping import ping
 import time
 import yaml
-from libs.host import address  
+from libs.host import address
 
 def init():
-    global bot, userid
+    global bot, userid, interval
+
+    interval = 30
 
     with open('/usr/src/app/config.yaml') as f:
         try:
-            docs = yaml.load_all(f, Loader=yaml.FullLoader)
+            docs = yaml.load_all(f), Loader=yaml.FullLoader)
 
             for doc in docs:
                 for k, v in doc.items():
-                    if k == "botid":
+                    if k == "botkey":
+                        pass
                         bot = Bot(v)
                     elif k == "userid":
                         userid = v
                     elif k == "hosts":
                         set_hosts(v)
+                    elif k == "interval":
+                        interval = int(v)
 
         except yaml.YAMLError as exc:
             print(exc)
@@ -36,35 +41,20 @@ def send_message(message):
     bot.send_message(userid, message, parse_mode='HTML', disable_web_page_preview=True)
 
 def ping_host(address):
-   
-    if ping_url(address.address):
-        if not address.status:
-            address.status = True
-            send_message(address.comment + " is up again")
-    else:
-        if (address.status):
-            address.status = False
-            send_message(address.comment + " is down")
-            
+
+    status = ping_url(address.address)
+    if status != address.status:
+        send_message(address.comment + ( " is unresolwed" if status is None else " is up" if status else " is down"))
+        address.status = status
 
 def ping_url(url):
 
-    i = 0;
-
     try:
         response_list = ping(url)
+    except:
+        return None
 
-        for response in response_list:
-            if (not response.success):
-                i += 1
-
-        if (i == 4):
-            return False
-        else:
-            return True
-            
-    except Exception as e:
-        send_message(str(e))
+    return sum(1 for x in response_list if x.success) > 0
 
 def main():
 
@@ -75,7 +65,7 @@ def main():
         for host in hosts_list:
             ping_host(host)
 
-        time.sleep(30)
+        time.sleep(interval)
 
 if __name__ == '__main__':
     main()
