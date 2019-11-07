@@ -5,13 +5,19 @@ import yaml
 from libs.host import address
 
 def init():
+
+"""
+Здесь парсим конфиг файл и подключаем бота, запоминаем
+интервал, userid и передаем список хостов функции set_hosts
+"""
+
     global bot, userid, interval
 
     interval = 30
 
     with open('/usr/src/app/config.yaml') as f:
         try:
-            docs = yaml.load_all(f), Loader=yaml.FullLoader)
+            docs = yaml.load_all(f, Loader=yaml.FullLoader)
 
             for doc in docs:
                 for k, v in doc.items():
@@ -30,6 +36,10 @@ def init():
 
 def set_hosts(hosts):
 
+"""
+Здесь парсим список хостов и передаем их в массив
+"""
+
     global hosts_list
     hosts_list = []
 
@@ -38,9 +48,18 @@ def set_hosts(hosts):
         hosts_list.append(address(ac[0], ac[1]))
 
 def send_message(message):
+
+"""
+Посылаем сообщение пользователю
+"""
+
     bot.send_message(userid, message, parse_mode='HTML', disable_web_page_preview=True)
 
 def ping_host(address):
+
+"""
+Логика приложения. Если статус хоста изменился, посылается сообщение пользователю.
+"""
 
     status = ping_url(address.address)
     if status != address.status:
@@ -48,6 +67,11 @@ def ping_host(address):
         address.status = status
 
 def ping_url(url):
+
+"""
+Пинг хоста. Response list - это ответ библиотеки ping. По умолчанию она
+посылает четыре пакета. Если хотя бы один раз пинг успешен, хост активен
+"""
 
     try:
         response_list = ping(url)
@@ -57,6 +81,10 @@ def ping_url(url):
     return sum(1 for x in response_list if x.success) > 0
 
 def main():
+
+"""
+Бесконечный цикл, который пингует сервисы один за другим.
+"""
 
     init()
 

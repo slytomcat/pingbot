@@ -7,13 +7,9 @@ networks:
 
 services:
 
-  checkservicebot:
-    container_name: checkservicesbot
-    build: .
+  pingbot:
+    container_name: pingbot
+    image: alsoeast/pingbot:1.1
     restart: always
     volumes:
-      - ./code:/usr/src/app
       - ./config.yaml:/usr/src/app/config.yaml
-    labels:
-      - traefik.enable=false
-    command: python /usr/src/app/main.py
