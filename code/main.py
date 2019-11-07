@@ -22,7 +22,6 @@ def init():
             for doc in docs:
                 for k, v in doc.items():
                     if k == "botkey":
-                        pass
                         bot = Bot(v)
                     elif k == "userid":
                         userid = v
@@ -62,6 +61,7 @@ def ping_host(address):
 """
 
     status = ping_url(address.address)
+    
     if status != address.status:
         send_message(address.comment + ( " is unresolwed" if status is None else " is up" if status else " is down"))
         address.status = status
