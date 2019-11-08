@@ -16,7 +16,6 @@ def init():
             for doc in docs:
                 for k, v in doc.items():
                     if k == "botkey":
-                        pass
                         bot = Bot(v)
                     elif k == "userid":
                         userid = v
