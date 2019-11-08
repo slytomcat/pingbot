@@ -11,7 +11,7 @@ def init():
 
     with open('/usr/src/app/config.yaml') as f:
         try:
-            docs = yaml.load_all(f), Loader=yaml.FullLoader)
+            docs = yaml.load_all(f, Loader=yaml.FullLoader)
 
             for doc in docs:
                 for k, v in doc.items():
