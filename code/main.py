@@ -30,11 +30,7 @@ def init():
 def set_hosts(hosts):
 
     global hosts_list
-    hosts_list = []
-
-    for item in hosts:
-        ac = item.split(":")
-        hosts_list.append(address(ac[0], ac[1]))
+    hosts_list = [address(ip, desc) for desc, ip in hosts.items()]
 
 def send_message(message):
     bot.send_message(userid, message, parse_mode='HTML', disable_web_page_preview=True)
