@@ -40,7 +40,7 @@ def set_hosts(hosts):
     """
 
     global hosts_list
-    hosts_list = [address(ip, desc) for desc, ip in hosts.items()]
+    hosts_list = [address(ip, desc) for ip, desc in hosts.items()]
 
 def send_message(message):
 
