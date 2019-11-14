@@ -9,6 +9,5 @@ Config example (config.yaml):
     userid: Telegram user ID (get it via @userinfobot)
     interval: ping interval (default - 30 sec)
     hosts:
-      8.8.8.8: dns.google
-      ya.ru: yandex 
-     
+      8.8.8.8: dns.google by IPv4
+      '2001:4860:4860::8844': dns.google by IPv6
