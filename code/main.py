@@ -1,5 +1,5 @@
 from telegram import Bot
-from pythonping import ping
+from multiping import multi_ping
 import time
 import yaml
 from libs.host import address
@@ -65,16 +65,17 @@ def ping_host(address):
 def ping_url(url):
 
     """
-    Пинг хоста. Response list - это ответ библиотеки ping. По умолчанию она
-    посылает четыре пакета. Если хотя бы один пинг успешен, хост активен
+    Пинг хоста. multi_ping пытается получить успешный пинг до 4 раз (1 попытка + 3 повтора) за 2 секунды.
+    Если это удалось, то в responses содержится словарь (dict) c url:<время отклика>. Если не удалось, то url возвращается
+    во втором параметре, а responses будет пусто.
     """
 
     try:
-        response_list = ping(url)
+        responses, _ = multi_ping([url], timeout=2, retry=3)
     except:
         return None
 
-    return sum(1 for x in response_list if x.success) > 0
+    return len(responses) > 0
 
 def main():
 
